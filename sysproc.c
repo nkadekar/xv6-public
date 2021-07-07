@@ -14,9 +14,9 @@ sys_fork(void)
 }
 
 int
-sys_exit(int status) //Lab1
+sys_exit()
 {
-  exit(status); //Lab1
+  exit(0); //Lab1
   return 0;  // not reached
 }
 
