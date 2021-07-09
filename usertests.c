@@ -109,7 +109,7 @@ openiputtest(void)
     printf(stdout, "unlink failed\n");
     exit(stdout); //Lab1
   }
-  wait(stdout); //Lab1
+  wait(0); //Lab1
   printf(stdout, "openiput test ok\n");
 }
 
@@ -346,7 +346,7 @@ pipe1(void)
       exit(1); //Lab1
     }
     close(fds[0]);
-    wait(fds[0]); //Lab1
+    wait(0); //Lab1
   } else {
     printf(1, "fork() failed\n");
     exit(1); //Lab1
@@ -394,9 +394,9 @@ preempt(void)
   kill(pid2);
   kill(pid3);
   printf(1, "wait... ");
-  wait(pid1); //Lab1
-  wait(pid2); //Lab1
-  wait(pid3); //Lab1
+  wait(0); //Lab1
+  wait(0); //Lab1
+  wait(0); //Lab1
   printf(1, "preempt ok\n");
 }
 
@@ -413,7 +413,7 @@ exitwait(void)
       return;
     }
     if(pid){
-      if(wait(pid) != pid){ //Lab1
+      if(wait(0) != pid){ //Lab1
         printf(1, "wait wrong pid\n");
         return;
       }
@@ -1533,7 +1533,7 @@ sbrktest(void)
     if(pids[i] == -1)
       continue;
     kill(pids[i]);
-    wait(pids[i]); //Lab1
+    wait(0); //Lab1
   }
   if(c == (char*)0xffffffff){
     printf(stdout, "failed sbrk leaked memory\n");
@@ -1577,7 +1577,7 @@ validatetest(void)
     sleep(0);
     sleep(0);
     kill(pid);
-    wait(pid); //Lab1
+    wait(0); //Lab1
 
     // try to crash the kernel by passing in a bad string pointer
     if(link("nosuchfile", (char*)p) != -1){
@@ -1720,7 +1720,7 @@ uio()
     printf (1, "fork failed\n");
     exit(1); //Lab1
   }
-  wait(1);  //Lab1
+  wait(0);  //Lab1
   printf(1, "uio test done\n");
 }
 
