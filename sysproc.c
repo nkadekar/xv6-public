@@ -23,8 +23,8 @@ sys_exit()
 int
 sys_wait(void)
 {
-  return wait();
-}
+  return wait(0); //Lab1
+} 
 
 int
 sys_kill(void)
