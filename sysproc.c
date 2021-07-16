@@ -27,6 +27,12 @@ sys_wait(void)
 } 
 
 int
+sys_waitpid(void) //Lab1
+{
+  return waitpid(0, 0, 0); 
+} 
+
+int
 sys_kill(void)
 {
   int pid;
