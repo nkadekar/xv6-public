@@ -4,7 +4,7 @@ struct rtcdate;
 // system calls
 int fork(void);
 int exit(int) __attribute__((noreturn)); //Lab1
-int wait(int*);
+int wait(int*); //Lab1
 int waitpid(int, int*, int); //Lab1
 int pipe(int*);
 int write(int, const void*, int);
