@@ -44,6 +44,14 @@ sys_waitpid(void) //Lab1
   return waitpid(pid, status, 0); 
 } 
 
+void
+sys_changepriority(void) //Lab2
+{
+  int priority;
+  argint(0, &priority);
+  return changepriority(priority);
+}
+
 int
 sys_kill(void)
 {
