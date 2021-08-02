@@ -61,7 +61,6 @@ myproc(void) {
   pushcli();
   c = mycpu();
   p = c->proc;
-  p -> priority = 15; //Lab2
   popcli();
   return p;
 }
@@ -89,6 +88,7 @@ allocproc(void)
 found:
   p->state = EMBRYO;
   p->pid = nextpid++;
+  p -> priority = 15; //Lab2
 
   release(&ptable.lock);
 
@@ -208,6 +208,8 @@ fork(void)
     if(curproc->ofile[i])
       np->ofile[i] = filedup(curproc->ofile[i]);
   np->cwd = idup(curproc->cwd);
+
+  np->priority = curproc->priority; //Lab2 : Priority donation/inheritance
 
   safestrcpy(np->name, curproc->name, sizeof(curproc->name));
 
@@ -383,6 +385,13 @@ changepriority(int priority) //Lab2
   }
 }
 
+int
+getpriority() //Lab2
+{
+  struct proc *curproc = myproc();
+  return curproc->priority;
+}
+
 //PAGEBREAK: 42
 // Per-CPU process scheduler.
 // Each CPU calls scheduler() after setting itself up.
@@ -395,17 +404,15 @@ changepriority(int priority) //Lab2
 #define NULL (void*)0 //Lab2
 
 void
-scheduler(void)
+scheduler(void) //Lab2
 {
   struct proc *p;
+  struct proc *p2;
   struct cpu *c = mycpu();
-
-  struct proc *minpriority = NULL; //Lab2
-  int minprioint = 32; //Lab2
+  struct proc *minpriority = NULL;
 
   c->proc = 0;
 
-  
   for(;;){
     // Enable interrupts on this processor.
     sti();
@@ -415,32 +422,37 @@ scheduler(void)
     for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
       if(p->state != RUNNABLE)
         continue;
-      if (p -> priority < minprioint) { //Lab2
-        minpriority = p;
+
+      minpriority = p;
+      
+      for(p2 = ptable.proc; p2 < &ptable.proc[NPROC]; p2++){
+        if(p2->state != RUNNABLE)
+          continue;
+
+        if (p2 -> priority < minpriority -> priority) {
+          minpriority = p2;
+        }
       }
+
+      // Switch to chosen process.  It is the process's job
+      // to release ptable.lock and then reacquire it
+      // before jumping back to us.
+
+      p = minpriority;
+
+      c->proc = p;
+      switchuvm(p);
+      p->state = RUNNING;
+
+      swtch(&(c->scheduler), p->context);
+      switchkvm();
+
+      // Process is done running for now.
+      // It should have changed its p->state before coming back.
+      c->proc = 0;
     }
 
-    p = minpriority; //Lab2 Moved all the actions outside the for loop
-
-    ///////////////////////////////////////////////////////// This was inside the for loop before
-
-    // Switch to chosen process.  It is the process's job
-    // to release ptable.lock and then reacquire it
-    // before jumping back to us.
-    c->proc = p;
-    switchuvm(p);
-    p->state = RUNNING;
-
-    swtch(&(c->scheduler), p->context);
-    switchkvm();
-
-    // Process is done running for now.
-    // It should have changed its p->state before coming back.
-    c->proc = 0;
-
-    /////////////////////////////////////////////////////////
-
-    release(&ptable.lock); 
+    release(&ptable.lock);
 
   }
 }

@@ -52,6 +52,12 @@ sys_changepriority(void) //Lab2
   return changepriority(priority);
 }
 
+int 
+sys_getpriority(void) //Lab2
+{
+  return getpriority();
+}
+
 int
 sys_kill(void)
 {

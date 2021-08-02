@@ -22,3 +22,4 @@
 #define SYS_close  21
 #define SYS_waitpid 22 //Lab1
 #define SYS_changepriority 23 //Lab2
+#define SYS_getpriority 24 //Lab2

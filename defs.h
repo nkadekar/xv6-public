@@ -122,6 +122,7 @@ int             waitpid(int, int*, int); //Lab1
 void            wakeup(void*);
 void            yield(void);
 void            changepriority(int); //Lab2
+int             getpriority(void); //Lab2
 
 // swtch.S
 void            swtch(struct context**, struct context*);
