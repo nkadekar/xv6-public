@@ -26,6 +26,7 @@ int sleep(int);
 int uptime(void);
 void changepriority(int); //Lab2
 int getpriority(void); //Lab2
+int yield(void);
 
 // ulib.c
 int stat(const char*, struct stat*);

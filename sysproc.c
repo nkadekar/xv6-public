@@ -58,6 +58,12 @@ sys_getpriority(void) //Lab2
   return getpriority();
 }
 
+void
+sys_yield(void) //Lab2
+{
+  return yield();
+}
+
 int
 sys_kill(void)
 {

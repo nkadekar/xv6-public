@@ -106,6 +106,7 @@ extern int sys_write(void);
 extern int sys_uptime(void);
 extern int sys_changepriority(void); //Lab2
 extern int sys_getpriority(void); //Lab2
+extern int sys_yield(void); //Lab2
 
 static int (*syscalls[])(void) = {
 [SYS_fork]    sys_fork,
@@ -131,7 +132,8 @@ static int (*syscalls[])(void) = {
 [SYS_close]   sys_close,
 [SYS_waitpid] sys_waitpid, //Lab1
 [SYS_changepriority] sys_changepriority, //Lab2
-[SYS_getpriority] sys_getpriority //Lab2
+[SYS_getpriority] sys_getpriority, //Lab2
+[SYS_yield] sys_yield //Lab2
 };
 
 void
